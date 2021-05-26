@@ -1,0 +1,52 @@
+.screen {
+    .title {
+        font-size: x-large;
+        display: block;
+        margin: 1rem 0;
+    }
+
+    .time {
+        font-size: small;
+        text-align: start;
+    };
+
+    .score {
+        font-size: small;
+        text-align: end;
+    }
+
+    text-align: center;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    background-color: gray;
+    color: white;
+}
+
+.car-number-show-screen {
+    .note {
+        display: block;
+        font-size: small;
+    }
+
+    .car-number {
+        text-transform: uppercase;
+        font-size: xx-large;
+        margin: 2rem 0;
+    }
+}
+
+.car-number-guess-screen {    
+    .note {
+        font-size: small;
+        display: block;
+        margin: 1rem 0;
+    }
+
+    .form .form-control {
+        text-transform: uppercase;
+    }
+}
+
+[v-cloak] {
+    display: none;
+};
