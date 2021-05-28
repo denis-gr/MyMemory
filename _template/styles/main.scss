@@ -13,13 +13,24 @@
     .score {
         font-size: small;
         text-align: end;
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+    }
+
+    .btn-close {
+        position: absolute;
+        right: 1rem;
+        top: 1rem;
     }
 
     text-align: center;
     padding: 1.5rem;
+    padding-top: 2.5rem;
     border-radius: 1rem;
     background-color: gray;
     color: white;
+    position: relative;
 }
 
 .car-number-show-screen {
@@ -45,6 +56,43 @@
     .form .form-control {
         text-transform: uppercase;
     }
+}
+
+.game-end-screen .body {
+    margin: 2rem;
+}
+
+game-end-screen .footer {
+    margin: 1rem;
+}
+
+.main-screen {
+    .game-preview-list {}
+
+    .game-preview {
+        .title {}
+
+        .description {
+            margin: 0 0 1rem 0;
+        }
+
+        .btn-start {}
+
+        padding: 1.5rem;
+        border-radius: 1.5rem;
+        background-color: gray;
+        color: white;
+        border: 0.5rem solid;  
+    }
+
+    background-color: white;
+    color: black;
+    padding: 0;
+}
+
+.main-navbar {
+    background-color: gray;
+    color: white;   
 }
 
 [v-cloak] {

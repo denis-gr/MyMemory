@@ -3,7 +3,7 @@
     "name": "MyMemory",
     "description": "MyMemory",
     "categories": ["education", "games", "productivity"],
-    "start_url": "{{ start_url }}/index.html#dashboard",
+    "start_url": "{{ start_url }}/index.html",
     "scope": "{{ start_url }}/",
     "background_color": "#ffffff",
     "theme_color": "#ffffff",
