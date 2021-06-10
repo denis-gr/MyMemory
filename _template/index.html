@@ -75,7 +75,7 @@
             </div>
         </div>
         <div class="main-screen screen" v-show="screen == 'none'" v-cloak>
-            <div class="game-preview-list row">
+            <div class="game-preview-list row g-3">
                 <div class="col-md-6">
                     <div v-for="i in settings.games" key="i.name" class="game-preview">
                         <div class="title" v-text="i.title"></div>
@@ -94,7 +94,7 @@
         </div>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js" defer></script>
-    <script src="scripts/main.js" defer></script>
+    <script src="{{ start_url }}/scripts/main.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" defer></script>
     <script>
         matchMedia("(prefers-color-scheme: dark)").onchange = event => {
@@ -103,7 +103,7 @@
         if (matchMedia("(prefers-color-scheme: dark)").matches) {
             document.querySelector("body").classList.add("dark");
         };
-        window.addEventListener('load', () => navigator.serviceWorker.register('{{ start_url }}/scripts/sw.js'));
+        window.addEventListener('load', () => navigator.serviceWorker.register('{{ start_url }}/sw.js'));
     </script>
 </body>
 
