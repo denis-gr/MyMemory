@@ -76,15 +76,19 @@
         </div>
         <div class="main-screen screen" v-show="screen == 'none'" v-cloak>
             <div class="game-preview-list row">
-                <div v-for="i in settings.games" key="i.name" class="game-preview col-sm-6">
-                    <div class="title" v-text="i.title"></div>
-                    <div class="description" v-text="i.description"></div>
-                    <button class="btn btn-primary btn-start" type="button" @click="startPlainGame(i.name)">Начать</button>
+                <div class="col-md-6">
+                    <div v-for="i in settings.games" key="i.name" class="game-preview">
+                        <div class="title" v-text="i.title"></div>
+                        <div class="description" v-text="i.description"></div>
+                        <button class="btn btn-primary btn-start" type="button" @click="startPlainGame(i.name)">Начать</button>
+                    </div>
                 </div>
-                <div class="game-preview col-sm-6">
-                    <div class="title">Мульти-режим</div>
-                    <div class="description">Смесь разных игр</div>
-                    <button class="btn btn-primary btn-start" type="button" @click="startMultiGame">Начать</button>
+                <div class="col-md-6">
+                    <div class="game-preview">
+                        <div class="title">Мульти-режим</div>
+                        <div class="description">Смесь разных игр</div>
+                        <button class="btn btn-primary btn-start" type="button" @click="startMultiGame">Начать</button>
+                    </div>                    
                 </div>
             </div>
         </div>

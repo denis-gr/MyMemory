@@ -1,3 +1,7 @@
+body {
+    background-color: darkgrey;
+};
+
 .screen {
     .title {
         font-size: x-large;
@@ -82,10 +86,9 @@ game-end-screen .footer {
         border-radius: 1.5rem;
         background-color: gray;
         color: white;
-        border: 0.5rem solid;  
     }
 
-    background-color: white;
+    background-color: transparent;
     color: black;
     padding: 0;
 }
