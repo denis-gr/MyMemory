@@ -2,7 +2,7 @@ DEFAILT_SETTINGS = {
     "CarNumber": {
         name: "CarNumber",
         title: "Автономильный номер",
-        description: "Запомните, а потом вспомните, автоноьильный номер в формате России",
+        description: "Запомните, а потом вспомните, автомобильный номер в формате России",
         timeShow: 7,
         countRound: 5,
     },
