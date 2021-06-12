@@ -62,6 +62,45 @@ body {
     }
 }
 
+.phone-number-show-screen {
+    .note {
+        display: block;
+        font-size: small;
+    }
+
+    .phone-number {
+        text-transform: uppercase;
+        font-size: xx-large;
+        margin: 2rem 0;
+    }
+}
+
+.phone-number-guess-screen {    
+    .note {
+        font-size: small;
+        display: block;
+        margin: 1rem 0;
+    }
+}
+
+.paragraph-show-screen.screen {
+    .title {
+        font-size: larger;
+    }
+
+    .paragraph-text {
+        font-size: x-large;
+    };
+}
+
+.paragraph-guess-screen {    
+    .note {
+        font-size: small;
+        display: block;
+        margin: 1rem 0;
+    }
+}
+
 .game-end-screen .body {
     margin: 2rem;
 }
@@ -91,6 +130,7 @@ game-end-screen .footer {
     background-color: transparent;
     color: black;
     padding: 0;
+    padding-bottom: 1rem;
 }
 
 .main-navbar {

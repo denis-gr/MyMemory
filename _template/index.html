@@ -49,13 +49,12 @@
             </div>
         </div>
         <div class="car-number-show-screen screen" v-show="screen == 'carNumberShow'" v-cloak>
-            <button type="button" class="btn-close btn-close-white" aria-label="Close" @click="screen='none'"></button>
             <div class="score">
                 <span>Счет: </span>
                 <span v-text="score + `/` + count"></span>
             </div>
             <span class="title">Попрубуйте запомнить автомобильный номер</span>
-            <div class="car-number" v-text="options.number"></div>
+            <div class="car-number" ref="car-number-number"></div>
             <div class="time">
                 <span>Оставшееся время: </span>
                 <small v-text="time"></small>
@@ -69,15 +68,64 @@
             </div>
             <span class="title">Попрубуйте вспомнить автомобильный номер</span>
             <small class="note">Наличие пробелов значения не имеет</small>
-            <div class="input-group mb-3 form" ref="form">
-                <input class="form-control" placeholder="..." aria-label="You answer" spellcheck="false" v-model="options.answer" ref="input">
-                <button class="btn btn-primary" type="button" ref="btn">Ответить</button>
+            <div class="input-group mb-3 form">
+                <input class="form-control" aria-label="You answer" spellcheck="false" ref="car-number-input">
+                <button class="btn btn-primary" type="button" ref="car-number-btn">Ответить</button>
+            </div>
+        </div>
+        <div class="phone-number-show-screen screen" v-show="screen == 'phoneNumberShow'" v-cloak>
+            <div class="score">
+                <span>Счет: </span>
+                <span v-text="score + `/` + count"></span>
+            </div>
+            <span class="title">Попрубуйте запомнить телефоный номер</span>
+            <div class="phone-number" ref="phone-number-number"></div>
+            <div class="time">
+                <span>Оставшееся время: </span>
+                <small v-text="time"></small>
+            </div>
+        </div>
+        <div class="phone-number-guess-screen screen" v-show="screen == 'phoneNumberGuess'" v-cloak>
+            <button type="button" class="btn-close btn-close-white" aria-label="Close"  @click="screen='none'"></button>
+            <div class="score">
+                <span>Счет: </span>
+                <span v-text="score + `/` + count"></span>
+            </div>
+            <span class="title">Попрубуйте вспомнить телефоный номер</span>
+            <small class="note">Наличие "+7" значения не имеет</small>
+            <div class="input-group mb-3 form">
+                <input class="form-control" aria-label="You answer" spellcheck="false" ref="phone-number-input">
+                <button class="btn btn-primary" type="button" ref="phone-number-btn">Ответить</button>
+            </div>
+        </div>
+        <div class="paragraph-show-screen screen" v-show="screen == 'paragraphShow'" v-cloak>
+            <div class="score">
+                <span>Счет: </span>
+                <span v-text="score + `/` + count"></span>
+            </div>
+            <span class="title">Попрубуйте запомнить фрагмент книги "<span ref="paragraph-name"></span>"</span>
+            <div class="paragraph-text" ref="paragraph-text"></div>
+            <div class="time">
+                <span>Оставшееся время: </span>
+                <small v-text="time"></small>
+            </div>
+        </div>
+        <div class="paragraph-guess-screen screen" v-show="screen == 'paragraphGuess'" v-cloak>
+            <button type="button" class="btn-close btn-close-white" aria-label="Close"  @click="screen='none'"></button>
+            <div class="score">
+                <span>Счет: </span>
+                <span v-text="score + `/` + count"></span>
+            </div>
+            <span class="title">Попрубуйте вспомнить фрагмент текста</span>
+            <div class="input-group mb-3 form">
+                <textarea class="form-control" aria-label="You answer" spellcheck="false" ref="paragraph-input"></textarea>
+                <button class="btn btn-primary" type="button" ref="paragraph-btn">Ответить</button>
             </div>
         </div>
         <div class="main-screen screen" v-show="screen == 'none'" v-cloak>
             <div class="game-preview-list row g-3">
-                <div class="col-md-6">
-                    <div v-for="i in settings.games" key="i.name" class="game-preview">
+                <div class="col-md-6" v-for="i in games" key="i.name">
+                    <div class="game-preview">
                         <div class="title" v-text="i.title"></div>
                         <div class="description" v-text="i.description"></div>
                         <button class="btn btn-primary btn-start" type="button" @click="startPlainGame(i.name)">Начать</button>
