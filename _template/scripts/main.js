@@ -1,10 +1,13 @@
-DEFAILT_SETTINGS = {
+const ANIMAL_SYMBOLS = "🐒🦍🦧🐕🦮🐕‍🐩🐺🦊🦝🐈🐈‍⬛🦁🐅🐆🐎🦄🦓🦌🦬🐂🐃🐄🐖🐗🐏🐑🐐🐪🦙🦒🐘🦣🦏🦛🐁🐹🐇🐿🦫🦔🦇🐻🐻‍❄️🐨🐼🦥🦦🦨🦘🦡🦃🐔🐓🐤🐦🐧🕊🦅🦆🦢🦉🦤🦩🦚🦜🐸🐊🐢🦎🐍🐉🦕🦖🐳🐬🦭🐟🐠🐡🦈🐙🐌🦋🐛🐜🐝🪲🐞🦗🪳🕷🦂🦟🪰🪱";
+
+const DEFAILT_SETTINGS = {
     "CarNumber": {
         name: "CarNumber",
         title: "Автономильный номер",
         description: "Запомните, а потом вспомните, автомобильный номер в формате России",
         timeShow: 7,
         countRound: 5,
+        maxCost: 2,
     },
     "PhoneNumber": {
         name: "PhoneNumber",
@@ -12,15 +15,17 @@ DEFAILT_SETTINGS = {
         description: "Запомните, а потом вспомните, телефоный номер в международном формате (РФ)",
         timeShow: 7,
         countRound: 5,
+        maxCost: 2,
     },
     "Paragraph": {
         name: "Paragraph",
         title: "Параграф",
-        description: "Запомните, а потом вспомните, телефоный номер в международном формате (РФ)",
-        timeShow: 7,
+        description: "Запомните, а потом вспомните, фрагмент текста",
+        timeShow: 70,
         countRound: 5,
         max: 200,
         min: 100,
+        maxCost: 5,
     },
     $: {
         countRound: 10,
@@ -29,6 +34,49 @@ DEFAILT_SETTINGS = {
 };
 
 const CACHE = {};
+
+function levenshtein(s1, s2, costs={}) {
+    var i, j, flip, ch, chl, ii, ii2, cost, cutHalf;
+    const l1 = s1.length;
+    const l2 = s2.length;
+    const cr = costs.replace || 1;
+    const cri = costs.replaceCase || costs.replace || 1;
+    const ci = costs.insert || 1;
+    const cd = costs.remove || 1;
+
+    cutHalf = flip = Math.max(l1, l2);
+
+    var minCost = Math.min(cd, ci, cr);
+    var minD = Math.max(minCost, (l1 - l2) * cd);
+    var minI = Math.max(minCost, (l2 - l1) * ci);
+    var buf = new Array((cutHalf * 2) - 1);
+
+    for (i = 0; i <= l2; ++i) {
+        buf[i] = i * minD;
+    };
+
+    for (i = 0; i < l1; ++i, flip = cutHalf - flip) {
+        ch = s1[i];
+        chl = ch.toLowerCase();
+
+        buf[flip] = (i + 1) * minI;
+
+        ii = flip;
+        ii2 = cutHalf - flip;
+
+        for (j = 0; j < l2; ++j, ++ii, ++ii2) {
+            cost = (ch === s2[j] ? 0 : (chl === s2[j].toLowerCase()) ? cri : cr);
+            buf[ii + 1] = Math.min(buf[ii2 + 1] + cd, buf[ii] + ci, buf[ii2] + cost);
+        };
+    };
+    return buf[l2 + cutHalf - flip];
+};
+
+function getCost(str1, str2, maxCost) {
+    const max = str1.length > str2.length ? str1 : str2;
+    const min = str1.length < str2.length ? str1 : str2;
+    return Math.floor((1 - levenshtein(max, min) / max.length) * maxCost);
+};
 
 function getRandomInt(max, min) {
     return Math.floor(Math.random() * (max - min - 1)) + min + 1;
@@ -54,6 +102,15 @@ async function getRandomParagraphFromBook(lang, min, max) {
     let p = b.text.split("\n").filter(i => i.length > min && i.length < max);
     p = getRandomVal(p);
     return {name: b.name, text: p};
+};
+
+async function getRandomName(lang="ru") {
+    if (!CACHE.names) {
+        CACHE.names = await fetch("{{ start_url }}/data/names.json");
+        CACHE.names = (await CACHE.names.json()).names;
+    };
+    const names = (CACHE.names[lang].man + CACHE.names[lang].woman).split(" ");
+    return getRandomVal(names);
 };
 
 const vueApp = Vue.createApp({
@@ -115,7 +172,7 @@ const vueApp = Vue.createApp({
         },
         async startParagraphShowScreen() {
             const s = this.settings.Paragraph;
-            const temp = await getRandomParagraphFromBook(null, s.min, s.max)
+            const temp = await getRandomParagraphFromBook(null, s.min, s.max);
             this.$refs["paragraph-text"].textContent = temp.text;
             this.$refs["paragraph-name"].textContent = temp.name;
             this.time = s.timeShow;
@@ -137,21 +194,22 @@ const vueApp = Vue.createApp({
             return answer;
         },
         async startPlainGame(nameGame) {
-            for (let i = 0; i < DEFAILT_SETTINGS[nameGame].countRound; i++) {
+            const settings = DEFAILT_SETTINGS[nameGame];
+            for (let i = 0; i < settings.countRound; i++) {
                 let temp = await this[`start${nameGame}ShowScreen`]();
                 let temp2 = await this[`start${nameGame}GuessScreen`]();
-                this.score += temp == temp2 ? 1 : 0;
-                this.count += 1;
+                this.score += getCost(temp, temp2, settings.maxCost);
+                this.count += settings.maxCost;
             };
             this.screen = "gameEnd";
         },
         async startMultiGame() {
             for (let i = 0; i < DEFAILT_SETTINGS.$.countRound; i++) {
                 let game = getRandomVal(DEFAILT_SETTINGS.$.games);
-                let temp = await this[`start${game}ShowScreen`]();
-                let temp2 = await this[`start${game}GuessScreen`]();
-                this.count += 1;
-                this.score += temp == temp2 ? 1 : 0;
+                let t = await this[`start${game}ShowScreen`]();
+                let t2 = await this[`start${game}GuessScreen`]();
+                this.count += DEFAILT_SETTINGS[game].maxCost;
+                this.score += getCost(t, t2, DEFAILT_SETTINGS[game].maxCost);
             };
             this.screen = "gameEnd";
         },
