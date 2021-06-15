@@ -1,5 +1,3 @@
-const ANIMAL_SYMBOLS = "🐒🦍🦧🐕🦮🐕‍🐩🐺🦊🦝🐈🐈‍⬛🦁🐅🐆🐎🦄🦓🦌🦬🐂🐃🐄🐖🐗🐏🐑🐐🐪🦙🦒🐘🦣🦏🦛🐁🐹🐇🐿🦫🦔🦇🐻🐻‍❄️🐨🐼🦥🦦🦨🦘🦡🦃🐔🐓🐤🐦🐧🕊🦅🦆🦢🦉🦤🦩🦚🦜🐸🐊🐢🦎🐍🐉🦕🦖🐳🐬🦭🐟🐠🐡🦈🐙🐌🦋🐛🐜🐝🪲🐞🦗🪳🕷🦂🦟🪰🪱";
-
 const DEFAILT_SETTINGS = {
     "CarNumber": {
         name: "CarNumber",
@@ -102,15 +100,6 @@ async function getRandomParagraphFromBook(lang, min, max) {
     let p = b.text.split("\n").filter(i => i.length > min && i.length < max);
     p = getRandomVal(p);
     return {name: b.name, text: p};
-};
-
-async function getRandomName(lang="ru") {
-    if (!CACHE.names) {
-        CACHE.names = await fetch("{{ start_url }}/data/names.json");
-        CACHE.names = (await CACHE.names.json()).names;
-    };
-    const names = (CACHE.names[lang].man + CACHE.names[lang].woman).split(" ");
-    return getRandomVal(names);
 };
 
 const vueApp = Vue.createApp({
